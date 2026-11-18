@@ -5,6 +5,7 @@ const CONTRACT_TYPE = 103;
 const MODE = 3;
 const TAB = 0;
 const GRADES = ['common', 'uncommon', 'rare'];
+const NON_FUSIBLE_CARD_IDS = new Set([341034, 340034, 311068, 310068]);
 const CLEAR = 1;
 const ADD = 2;
 const OPTION = 5;
@@ -89,7 +90,7 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
     }
 
     function isEligible(item, grade) {
-        return isCard(item) && String(item.data.rareGrade) === String(grade) &&
+        return isCard(item) && !NON_FUSIBLE_CARD_IDS.has(item.id) && String(item.data.rareGrade) === String(grade) &&
             (getCollection()?.get(item.id) ?? 0) >= collectionLimit;
     }
 
