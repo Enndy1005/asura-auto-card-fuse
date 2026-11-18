@@ -15,6 +15,6 @@ Enter commands in the Toolbox chat channel (`/8`).
 
 ## How it works
 
-Close the manual Random Fusion window before starting. The mod opens its own table on TERA Asura (protocol `376012`). It picks the largest eligible stacks of four distinct card types in your bag and pockets. Each type needs at least 20 registered copies, and you need four free inventory slots. Fusion skips card IDs `341034`, `340034`, `311068`, `310068`, `312027`, `311027`, and `310027`.
+Close the manual Random Fusion window before starting. The mod opens its own table on TERA Asura (protocol `376012`). It picks the largest eligible stacks of four distinct card types in your bag and pockets. Each type needs at least 20 registered copies, and you need four free inventory slots. Fusion skips card IDs `341034`, `340034`, `311068`, `310068`, `311027`, and `310027`.
 
 The smallest stack sets the batch size. For stacks of 7, 5, 4, and 2, the mod runs up to two confirmed fusions before closing the table. Once the server confirms closure and inventory updates, the mod rescans and opens a fresh table if four eligible types remain. It stops on a manual stop, a server rejection, or an unconfirmed fusion.

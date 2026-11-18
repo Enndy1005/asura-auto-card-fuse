@@ -1,7 +1,7 @@
 {
     "name": "card-fusion",
     "description": "Guarded Random Fusion and explicit fragment registration for TERA Asura.",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "keywords": ["network"],
     "disableAutoUpdate": true,
     "options": {
