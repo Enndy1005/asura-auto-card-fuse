@@ -1,0 +1,9 @@
+byte mode
+byte operation
+byte tab
+byte slot
+uint32 requestId
+uint32 contractId
+int32 cardId
+uint32 amount
+uint64 dbid

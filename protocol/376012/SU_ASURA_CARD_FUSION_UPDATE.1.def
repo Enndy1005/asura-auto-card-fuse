@@ -1,0 +1,8 @@
+# Asura 376012, 24 bytes. This precedes the reward result.
+byte mode
+byte tab
+uint16 reserved
+uint32 requestId
+uint32 contractId
+uint32 option
+uint32 remaining

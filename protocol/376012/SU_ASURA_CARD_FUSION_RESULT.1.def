@@ -1,0 +1,9 @@
+byte mode
+byte tab
+uint16 resultFlags
+uint32 requestId
+uint32 contractId
+uint32 option
+int32 rewardCardId
+uint32 rewardAmount
+uint32 remaining

@@ -1,0 +1,11 @@
+# Asura 376012, 40 bytes. The response echoes the slot operation and stack.
+byte mode
+byte tab
+uint16 operation
+uint32 requestId
+uint32 contractId
+uint32 sequence
+uint32 remaining
+int32 cardId
+uint32 amount
+uint64 dbid

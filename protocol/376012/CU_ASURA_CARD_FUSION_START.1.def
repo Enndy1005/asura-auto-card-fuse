@@ -1,0 +1,6 @@
+byte mode
+byte tab
+uint16 reserved
+uint32 requestId
+uint32 contractId
+uint32 option
