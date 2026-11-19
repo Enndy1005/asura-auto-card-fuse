@@ -81,22 +81,22 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
         run.cancelled = true;
     }
 
-    function inventoryProblem() {
-        if (!getCollection()) return 'Waiting for card collection data.';
+    function inventoryProblem({ checkCollection }) {
+        if (checkCollection && !getCollection()) return 'Card collection data has not loaded. Run fuse again after it loads, or use fuse collection to turn off the check.';
         const free = freeSlots();
         if (free === null) return 'Waiting for inventory data.';
         if (free < SLOT_COUNT) return 'Four free inventory slots are required.';
         return null;
     }
 
-    function isEligible(item, grade) {
+    function isEligible(item, { grade, checkCollection }) {
         return isCard(item) && !NON_FUSIBLE_CARD_IDS.has(item.id) && String(item.data.rareGrade) === String(grade) &&
-            (getCollection()?.get(item.id) ?? 0) >= collectionLimit;
+            (!checkCollection || (getCollection()?.get(item.id) ?? 0) >= collectionLimit);
     }
 
-    function selectCards(grade) {
+    function selectCards(criteria) {
         const selected = new Map();
-        for (const item of inventory.bagOrPocketItems.filter(item => isEligible(item, grade)).sort((a, b) => b.amount - a.amount)) {
+        for (const item of inventory.bagOrPocketItems.filter(item => isEligible(item, criteria)).sort((a, b) => b.amount - a.amount)) {
             if (!selected.has(item.id)) selected.set(item.id, { id: item.id, dbid: item.dbid, balance: item.amount });
             if (selected.size === SLOT_COUNT) break;
         }
@@ -104,14 +104,14 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
     }
 
     function verifyCards() {
-        const problem = inventoryProblem();
+        const problem = inventoryProblem(run);
         if (problem) {
             stop(problem);
             return false;
         }
         const eligible = run.cards.every(({ id, dbid, balance }) => {
             const current = inventory.dbids[dbid];
-            return balance > 0 && current?.id === id && current.container === 0 && isEligible(current, run.grade);
+            return balance > 0 && current?.id === id && current.container === 0 && isEligible(current, run);
         });
         if (!eligible) stop('Selected stacks changed during placement.');
         return eligible;
@@ -165,9 +165,9 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
             }
             return;
         }
-        const problem = inventoryProblem();
+        const problem = inventoryProblem(run);
         if (problem) return stop(problem);
-        run.cards = selectCards(run.grade);
+        run.cards = selectCards(run);
         if (run.cards.length < SLOT_COUNT) return stop('Fewer than four eligible card types remain.');
         run.left = Math.min(...run.cards.map(card => card.balance));
         addCard(0);
@@ -202,9 +202,9 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
         if (run?.phase !== 'restart' || revision <= run.beforeRevision) return;
         if (!run.cards.every((card, index) => card.id === run.rewardId ||
             (inventory.dbids[card.dbid]?.amount ?? 0) < run.before[index])) return;
-        const problem = inventoryProblem();
+        const problem = inventoryProblem(run);
         if (problem) return stop(problem);
-        if (selectCards(run.grade).length < SLOT_COUNT) return stop('Fewer than four eligible ' + GRADES[run.grade] + ' card types remain.');
+        if (selectCards(run).length < SLOT_COUNT) return stop('Fewer than four eligible ' + GRADES[run.grade] + ' card types remain.');
         openTable();
     }
 
@@ -312,19 +312,20 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
     inventory.on('update', inventoryUpdated);
     return {
         get busy() { return run !== null; },
-        start(grade) {
+        start(grade, checkCollection = false) {
             if (run) {
                 return message(run.cancelled || run.phase === 'closing'
                     ? 'Waiting for the previous contract to finish.'
                     : 'Fusion is already running. Use fusestop to stop it.');
             }
             if (manualWindow !== null) return message('Close the Random Fusion window first.');
-            const problem = inventoryProblem();
+            const criteria = { grade, checkCollection };
+            const problem = inventoryProblem(criteria);
             if (problem) return message(problem);
             if (!game.me.gameId) return message('Your character has not loaded yet.');
-            if (selectCards(grade).length < SLOT_COUNT) return message('Fusion needs four eligible ' + GRADES[grade] + ' card types.');
+            if (selectCards(criteria).length < SLOT_COUNT) return message('Fusion needs four eligible ' + GRADES[grade] + ' card types.');
 
-            run = { grade, cancelled: false, restart: false, cards: null, action: null };
+            run = { ...criteria, cancelled: false, restart: false, cards: null, action: null };
             message('Starting fusion for ' + GRADES[grade] + ' cards.');
             openTable();
         },

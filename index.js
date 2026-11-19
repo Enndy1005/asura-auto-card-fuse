@@ -14,6 +14,7 @@ module.exports.NetworkMod = function CardFusion(mod) {
     game.initialize('inventory');
     const { inventory } = game;
     let collection = null;
+    let checkCollection = false;
     let registration = null;
     let timer = null;
 
@@ -73,7 +74,7 @@ module.exports.NetworkMod = function CardFusion(mod) {
     }
 
     const collectionError = unavailable.protocol || unavailable.collection;
-    const fusionError = collectionError || unavailable.fusion;
+    const fusionError = unavailable.protocol || unavailable.fusion;
     const registerError = collectionError || unavailable.register;
     const fusion = !fusionError && createFusion(mod, () => collection, freeSlots, isCard, COLLECTION_LIMIT, message);
 
@@ -103,25 +104,35 @@ module.exports.NetworkMod = function CardFusion(mod) {
         stopRegistration();
         if (fusion) fusion.dispose();
         collection = null;
+        checkCollection = false;
     }
 
     game.on('leave_game', leave);
     command.add('fuse', (...args) => {
         const [choice = '3', label] = args;
+        if (args.length === 1 && choice.toLowerCase() === 'collection') {
+            const error = fusionError || collectionError;
+            if (error) return message(`Collection check is unavailable. ${error}`);
+            if (fusion.busy) return message('Use fusestop before changing the collection check.');
+            checkCollection = !checkCollection;
+            return message(checkCollection
+                ? `Collection check is on. Fusion requires ${COLLECTION_LIMIT} registered copies per card type.`
+                : 'Collection check is off. Fusion can use fragments of unregistered cards.');
+        }
         const grade = Number(choice) - 1;
         const expectedLabel = label?.toLowerCase() === 'uncommong' ? 'uncommon' : label?.toLowerCase();
         if (args.length > 2 || !/^[1-3]$/.test(choice) || (label && expectedLabel !== RARITY_NAMES[grade])) {
-            return message('Use fuse 1 for common, fuse 2 for uncommon, or fuse 3 for rare. Plain fuse also selects rare.');
+            return message('Use fuse 1 for common, fuse 2 for uncommon, or fuse 3 for rare. Use fuse collection to toggle the collection check.');
         }
         if (fusionError) return message(`Fusion is unavailable. ${fusionError}`);
         if (registration) return message('Card registration is already running.');
-        fusion.start(grade);
+        fusion.start(grade, checkCollection);
     });
     command.add('fusestop', () => {
         if (fusion) fusion.stop();
     });
     command.add('cardfusion', {
-        $default() { message('fuse 1 (common), fuse 2 (uncommon), fuse 3 (rare), fusestop (stop fusion), cardfusion register (register fragments).'); },
+        $default() { message('fuse 1 (common), fuse 2 (uncommon), fuse 3 (rare), fuse collection (toggle collection check), fusestop (stop fusion), cardfusion register (register fragments).'); },
         register() {
             if (registerError) return message(`Registration is unavailable. ${registerError}`);
             if (fusion?.busy || registration) return message('Another card operation is already running.');
