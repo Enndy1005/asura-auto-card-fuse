@@ -1,4 +1,4 @@
-const { randomInt } = require('node:crypto');
+const { randomBytes } = require('crypto');
 const { SLOT, START, RESULT, STATE, SLOT_ACK, UPDATE } = require('./protocol');
 
 const CONTRACT_TYPE = 103;
@@ -20,7 +20,7 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
     let run = null;
     let manualWindow = null;
     let timer = null;
-    let requestId = randomInt(1, 0x80000000);
+    let requestId = (randomBytes(4).readUInt32LE(0) >>> 1) || 1;
     let revision = 0;
 
     function cancelTimer() {

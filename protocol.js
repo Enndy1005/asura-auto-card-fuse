@@ -1,5 +1,5 @@
-const { isDeepStrictEqual } = require('node:util');
-const path = require('node:path');
+const { isDeepStrictEqual } = require('util');
+const path = require('path');
 const { parsers } = require('tera-data-parser');
 const { compile } = require('tera-data-parser/lib/protocol/compiler');
 
