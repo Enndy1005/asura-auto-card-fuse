@@ -1,6 +1,6 @@
 {
   "files": {
-    "README.md": "7fb507731de8a1887a41c5a4cb51350dfd985ce8b7e99881084fc1f6cf5ba09b",
+    "README.md": "2a973cd41b830a7bfa321f2824e3bccc5591b1e3385100280534d9bcf2bfb313",
     "config.json": {
       "overwrite": false,
       "hash": "72e72489974579ebb618f303347f663035cccf58ec04234a5827cfd1e9d289f8"
@@ -20,6 +20,8 @@
     "protocol/376012/SU_ASURA_CARD_FUSION_RESULT.1.def": "d5603cbc4310259f8d33553174458cff80e2656a0cc45df8f5058f6207998958",
     "protocol/376012/SU_ASURA_CARD_FUSION_SLOT_ACK.1.def": "d37544ee8e965af0755cdfdf688643e1ffc52af4fba1834fc28a013455e58f55",
     "protocol/376012/SU_ASURA_CARD_FUSION_STATE.1.def": "e2020d48027c1952cea087646b3a44ed4cc6887d9c7e5c49152669baaaf01574",
-    "protocol/376012/SU_ASURA_CARD_FUSION_UPDATE.1.def": "c45a12aa873314beab2ddc7466d9b032d6ded86dfde249ff1d693911ccb4f996"
+    "protocol/376012/SU_ASURA_CARD_FUSION_UPDATE.1.def": "c45a12aa873314beab2ddc7466d9b032d6ded86dfde249ff1d693911ccb4f996",
+    "screenshots/menu-ru.png": "eec31fe6ced2285cba0d804467728fc23530f7a31bb96b9b5751efebbb698577",
+    "screenshots/menu-en.png": "d4b4b9e9a455abd502c66bc0e85b736b4f37cb160965ad3f8cb6bd996d0ac3a2"
   }
 }

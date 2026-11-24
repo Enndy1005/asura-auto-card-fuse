@@ -28,3 +28,13 @@ When you enable `fuse collection`, the mod skips any card type you haven’t com
 The check is **off by default**, so fusion can use fragments from unfinished card types. Run `fuse collection` again to turn the check off. Its state is saved in `config.json` and persists across character changes and module restarts.
 
 The smallest stack sets the batch size. For stacks of 7, 5, 4, and 2, the mod runs up to two confirmed fusions before closing the table. Once the server confirms closure and inventory updates, the mod rescans and opens a fresh table if four eligible types remain. It stops on a manual stop, a server rejection, or an unconfirmed fusion.
+
+## Menu screenshots
+
+Russian interface:
+
+![Card Fusion menu in Russian](screenshots/menu-ru.png)
+
+English interface:
+
+![Card Fusion menu in English](screenshots/menu-en.png)
