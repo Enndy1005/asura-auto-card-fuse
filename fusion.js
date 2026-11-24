@@ -75,8 +75,7 @@ module.exports = function createFusion(mod, getCollection, freeSlots, isCard, co
         if (run.phase === 'restart') return finish();
         if (run.contractId !== null) return close();
 
-        // The opening request cannot be cancelled before an ID is assigned.
-        // Keep it pending to close a late grant, unless a manual open supersedes it.
+
         cancelTimer();
         run.cancelled = true;
     }

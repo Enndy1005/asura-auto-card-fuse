@@ -12,22 +12,41 @@ const SLOT_ACK = 'SU_ASURA_CARD_FUSION_SLOT_ACK';
 const UPDATE = 'SU_ASURA_CARD_FUSION_UPDATE';
 const DIRECTORY = path.join(__dirname, 'protocol', String(VERSION));
 
-const COLLECTION_SAMPLES = {
-    S_CARD_DATA: {
-        gameId: 17n, presetCount: 3, currentPreset: 1, collectionLevel: 5, collectionPoints: 234,
-        cards: [{ cardId: 301011, cardCount: 19 }, { cardId: 302014, cardCount: 20 }],
-        presets: [{ index: 7, presetCards: [{ cardId: 301011 }, { cardId: 302014 }] }],
-        collectionPointsRewards: [{ index: 11 }, { index: 13 }]
-    },
-    S_REGISTER_CARD: { name: 'Card', cardId: 301011, count: 19, totalCollectionPoints: 234 }
+const COLLECTION_DEFINITIONS = {
+    S_REGISTER_CARD: [
+        ['id', 'uint32'], ['num', 'uint32'], ['collectionScore', 'uint32']
+    ],
+    S_CARD_DATA: [
+        ['cards', 'refArray'], ['presets', 'refArray'], ['unk', 'uint32'], ['name', 'refString'],
+        ['gameId', 'uint64'], ['numPresets', 'uint32'], ['currentPreset', 'uint32'],
+        ['collectionLevel', 'uint32'], ['collectionScore', 'uint32'], ['name', 'string'],
+        ['cards', [['id', 'uint32'], ['num', 'uint32']]],
+        ['presets', [
+            ['equippedCards', 'refArray'], ['preset', 'uint32'],
+            ['equippedCards', [['id', 'uint32']]]
+        ]]
+    ]
 };
+
+function prepareDefinition(fields, type = 'root') {
+    const result = fields.map(([name, field]) => [name, Array.isArray(field) ? prepareDefinition(field, 'array') : field]);
+    result.type = type;
+    if (type === 'array') result.flags = [];
+    return result;
+}
+
+function installCollectionDefinitions(dispatch) {
+    for (const [name, fields] of Object.entries(COLLECTION_DEFINITIONS)) {
+        dispatch.addDefinition(name, 1, prepareDefinition(fields), false);
+    }
+}
 
 function compatible(name, installed, expected) {
     if (!installed.readable || !installed.writeable ||
         installed.hasPadding !== expected.hasPadding || installed.minLength !== expected.minLength ||
         installed.isDynamicLength !== expected.isDynamicLength) return false;
 
-    const sample = COLLECTION_SAMPLES[name] ?? expected.reader(
+    const sample = expected.reader(
         new DataView(Uint8Array.from({ length: expected.minLength }, (_, index) => index + 1).buffer));
     const bytes = new Uint8Array(0x10000);
     const view = new DataView(bytes.buffer);
@@ -88,9 +107,7 @@ function configure(dispatch) {
         }
     }
 
-    check('collection', () => bindPackets(dispatch, [
-        ['S_CARD_DATA', 20604, true], ['S_REGISTER_CARD', 38933, true]
-    ]));
+    check('collection', () => installCollectionDefinitions(dispatch));
     check('register', () => {
         if (!dispatch.resolve('C_USE_ITEM', 3).definition.writeable) {
             throw new Error('This connection does not support card registration.');

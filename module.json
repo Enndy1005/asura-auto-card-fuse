@@ -1,12 +1,17 @@
 {
     "name": "card-fusion",
     "description": "Guarded Random Fusion and explicit fragment registration for TERA Asura.",
-    "version": "1.5.1",
+    "version": "1.6.0",
     "keywords": ["network"],
-    "disableAutoUpdate": true,
+    "disableAutoUpdate": false,
+    "servers": [
+        "https://raw.githubusercontent.com/Enndy1005/asura-auto-card-fuse/main/"
+    ],
     "options": {
         "cliName": "Card Fusion",
         "guiName": "Card Fusion",
+        "settingsVersion": 1,
+        "settingsFile": "config.json",
         "reloadable": false
     },
     "dependencies": {

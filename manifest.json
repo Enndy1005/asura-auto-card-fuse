@@ -1,0 +1,25 @@
+{
+  "files": {
+    "README.md": "7fb507731de8a1887a41c5a4cb51350dfd985ce8b7e99881084fc1f6cf5ba09b",
+    "config.json": {
+      "overwrite": false,
+      "hash": "72e72489974579ebb618f303347f663035cccf58ec04234a5827cfd1e9d289f8"
+    },
+    "fusion.js": "c6a94ed9bde7c8fb4202d3e35f3fee38de379f002480a6d0f854944963b2c68e",
+    "index.js": "63837d12c5ec658664d91897ed293ef5bbb36466e448587554580436fd149f20",
+    "menu.js": "76f49afff3d30943529bf7ed2fe919a8e329bc60f4c5b04cd35a9814bccf6074",
+    "menu_ru.js": "008269c5a27c5f022e14a258218998835e666b8656476b1ffa142c49c89fc06c",
+    "messages.js": "437645bcb9215e9b34a6bd0be6cfa4b5ec4351ea16abfd0116d4c3a89e4fe44f",
+    "module.json": "903a5739c56fe0081bf204ac69d36ea0545e9dd74f5b134eb2721966f3411978",
+    "protocol.js": "926ee54c041bbb211760d6c4e15646e99fcb50fb44e44c443925b512ef4d843b",
+    "protocol/376012/CU_ASURA_CARD_FUSION_SLOT.1.def": "e8c8c299f5d1ce66cfa42560454b703080f3f6cd424fea811985dbf3a8f1dc63",
+    "protocol/376012/CU_ASURA_CARD_FUSION_START.1.def": "b372a8abf1d277513bebd0ff59bbc0b2b2451c2b67152dc9007a8f138f6a7497",
+    "protocol/376012/protocol.376012.map": "6316027ee32137b7c265bdbf223c6d92bb451a53e3280ac3ff54779e61fcddd1",
+    "protocol/376012/S_CARD_DATA.1.def": "61c5f3a58b834008e8b00a16c7ae5da5e0f711bd0a275b2b4fcc033d234b3dd4",
+    "protocol/376012/S_REGISTER_CARD.1.def": "0e34b31b75b956308bd3e32b43ceea10d95a8adfa25d2609a2553e9560f30851",
+    "protocol/376012/SU_ASURA_CARD_FUSION_RESULT.1.def": "d5603cbc4310259f8d33553174458cff80e2656a0cc45df8f5058f6207998958",
+    "protocol/376012/SU_ASURA_CARD_FUSION_SLOT_ACK.1.def": "d37544ee8e965af0755cdfdf688643e1ffc52af4fba1834fc28a013455e58f55",
+    "protocol/376012/SU_ASURA_CARD_FUSION_STATE.1.def": "e2020d48027c1952cea087646b3a44ed4cc6887d9c7e5c49152669baaaf01574",
+    "protocol/376012/SU_ASURA_CARD_FUSION_UPDATE.1.def": "c45a12aa873314beab2ddc7466d9b032d6ded86dfde249ff1d693911ccb4f996"
+  }
+}
